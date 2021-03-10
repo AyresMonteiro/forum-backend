@@ -1,0 +1,17 @@
+body {
+  width: 100%;
+  height: 100%;
+}
+
+.content-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.topic {
+  background-color: #f7c59f;
+}
+
+/*# sourceMappingURL=app.css.map */
