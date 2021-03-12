@@ -1,5 +1,18 @@
 @import "./variables";
 
 .topic {
-  background-color: $primary;
+  width: 100%;
+  border: 5px solid $secondary;
+  border-radius: 25px;
+
+  > .title {
+    font-weight: bold;
+    font-size: 20pt;
+    padding: 25px;
+    color: $fifth;
+    background-color: $secondary;
+    border-radius: 10px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
 }

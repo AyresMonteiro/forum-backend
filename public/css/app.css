@@ -1,6 +1,26 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap");
 body {
+  color: #2a324b;
+  background-color: #e1e5ee;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: "Roboto", sans-serif;
+}
+
+.main {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   width: 100%;
-  height: 100%;
+}
+.main h1 {
+  font-size: 36pt;
 }
 
 .content-container {
@@ -8,10 +28,83 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  max-width: 80%;
+  gap: 20px;
+}
+.content-container .topics-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+}
+
+.new-post {
+  font-size: 16pt;
+  font-weight: bold;
+  text-decoration: none;
+  color: #e1e5ee;
+  background-color: #2a324b;
+  border-radius: 15px;
+  padding: 15px;
+  transition: 0.3s;
+  cursor: pointer;
+}
+.new-post:hover {
+  background-color: #e1e5ee;
+  color: #181c2a;
 }
 
 .topic {
-  background-color: #f7c59f;
+  width: 100%;
+  border: 5px solid #2a324b;
+  border-radius: 25px;
+}
+.topic > .title {
+  font-weight: bold;
+  font-size: 20pt;
+  padding: 25px;
+  color: #e1e5ee;
+  background-color: #2a324b;
+  border-radius: 10px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.subtopic {
+  padding: 50px;
+  border-bottom: 3px solid #2a324b;
+}
+.subtopic > .title {
+  padding-bottom: 2px;
+  margin-bottom: 5px;
+  border-bottom: 1px solid #2a324b;
+}
+.subtopic > .title a {
+  color: #2a324b;
+  text-decoration: none;
+  transition: 0.3s;
+  cursor: pointer;
+}
+.subtopic > .title a:hover {
+  color: #181c2a;
+}
+.subtopic .summary {
+  font-size: 10pt;
+  margin-bottom: 20px;
+}
+.subtopic .last-post a {
+  color: #767b91;
+  text-decoration: none;
+  transition: 0.3s;
+  cursor: pointer;
+}
+.subtopic .last-post a:hover {
+  color: #2a324b;
+}
+.subtopic:last-child {
+  border-bottom: none;
 }
 
 /*# sourceMappingURL=app.css.map */

@@ -1,3 +1,11 @@
+@import 'modules/variables';
+
+body {
+  color: $secondary;
+  background-color: $fifth;
+}
+
 @import "modules/landing";
+@import "modules/newPost";
 @import "modules/topic";
 @import "modules/subtopic";

@@ -1,0 +1,44 @@
+.subtopic {
+  padding: 50px;
+  border-bottom: 3px solid $secondary;
+
+  > .title {
+    padding-bottom: 2px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid $secondary;
+
+    a {
+      color: $secondary;
+      text-decoration: none;
+      transition: .3s;
+      cursor: pointer;
+
+      &:hover {
+        color: darken($secondary, 10%);
+      }
+    }
+  }
+
+  .summary {
+    font-size: 10pt;
+    margin-bottom: 20px;   
+  }
+
+  .last-post {
+    a {
+      color: $third;
+      text-decoration: none;
+      transition: .3s;
+      cursor: pointer;
+  
+      &:hover {
+        color: $secondary;
+      }
+    }
+  }
+
+
+  &:last-child {
+    border-bottom: none;
+  }
+}

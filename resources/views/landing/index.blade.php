@@ -15,7 +15,9 @@
         <h1><strong>CEFET</strong> Forum</h1>
     </div>
     <div class="content-container">
+        <a href="" class="new-post">Criar Post</a>
         <div class="topics-container">
+            @include('landing.topic')
             @include('landing.topic')
         </div>
     </div>
