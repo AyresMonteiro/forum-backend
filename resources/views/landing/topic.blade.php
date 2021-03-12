@@ -1,10 +1,8 @@
 <div class="topic">
-  <div class="title">Título do tópico</div>
+  <div class="title">{{$topic->title}}</div>
   <div class="subtopics-container">
-    @include('landing.subtopic')
-    @include('landing.subtopic')
-    @include('landing.subtopic')
-    @include('landing.subtopic')
-    @include('landing.subtopic')
+    @foreach ($topic->subtopics as $subtopic)
+        @include('landing.subtopic', ['subtopic' => $subtopic])
+    @endforeach
   </div>
 </div>

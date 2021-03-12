@@ -17,8 +17,9 @@
     <div class="content-container">
         <a href="" class="new-post">Criar Post</a>
         <div class="topics-container">
-            @include('landing.topic')
-            @include('landing.topic')
+            @foreach ($topics as $topic)
+                @include('landing.topic', ['topic' => $topic])
+            @endforeach
         </div>
     </div>
 </body>
