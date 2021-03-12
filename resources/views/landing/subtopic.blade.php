@@ -6,6 +6,6 @@
         {{ $subtopic->summary }}
     </div>
     <div class="last-post">
-        <a href="">{{ $subtopic->posts[0]->body }}</a>
+        <a href="">{{ $subtopic->latestPost->body }}</a>
     </div>
 </div>
