@@ -9,9 +9,10 @@ class Topic extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title'];
+    protected $fillable = ["title"];
 
-    public function subtopics() {
-        return $this->hasMany(Subtopic::class, 'owner_topic', 'uuid');
+    public function subtopics()
+    {
+        return $this->hasMany(Subtopic::class, "owner_topic", "uuid");
     }
 }

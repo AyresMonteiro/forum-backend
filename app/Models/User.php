@@ -10,12 +10,22 @@ class User extends Model
     use HasFactory;
 
     protected $fillable = [
-        'username',
-        'email',
-        'password',
-        'fullName',
-        'picture',
-        'country',
-        'birthday',
+        "username",
+        "email",
+        "password",
+        "fullName",
+        "picture",
+        "country",
+        "birthday",
     ];
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class, "owner_user", "uuid");
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, "owner_user", "uuid");
+    }
 }
