@@ -19,6 +19,10 @@ class User extends Model
         "birthday",
     ];
 
+    protected $hidden = [
+        "password",
+    ];
+
     public function posts()
     {
         return $this->hasMany(Post::class, "owner_user", "id");
