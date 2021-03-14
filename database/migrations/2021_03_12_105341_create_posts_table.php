@@ -17,7 +17,7 @@ class CreatePostsTable extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->bigInteger('uuid')->default(new Expression('UUID_SHORT()'))->primary();
             $table->bigInteger('owner_subtopic')->nullable();
-            $table->bigInteger('owner_user');
+            $table->bigInteger('owner_user')->nullable();
             $table->string('title');
             $table->text('body')->nullable();
             $table->timestamp('created_at')->default(new Expression('NOW()'));
