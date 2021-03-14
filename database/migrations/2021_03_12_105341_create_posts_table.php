@@ -17,6 +17,8 @@ class CreatePostsTable extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->bigInteger('uuid')->default(new Expression('UUID_SHORT()'))->primary();
             $table->bigInteger('owner_subtopic')->nullable();
+            $table->bigInteger('owner_user');
+            $table->string('title');
             $table->text('body')->nullable();
             $table->timestamp('created_at')->default(new Expression('NOW()'));
             $table->timestamp('updated_at')->default(new Expression('NOW()'));
@@ -25,6 +27,13 @@ class CreatePostsTable extends Migration
                 ->foreign('owner_subtopic')
                 ->references('uuid')
                 ->on('subtopics')
+                ->onDelete('set null')
+                ->onUpdate('cascade');
+
+            $table
+                ->foreign('owner_user')
+                ->references('uuid')
+                ->on('users')
                 ->onDelete('set null')
                 ->onUpdate('cascade');
         });
