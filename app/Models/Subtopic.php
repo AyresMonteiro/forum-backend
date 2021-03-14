@@ -11,11 +11,11 @@ class Subtopic extends Model
 
     public function posts()
     {
-        return $this->hasMany(Post::class, "owner_subtopic", "uuid");
+        return $this->hasMany(Post::class, "owner_subtopic", "id");
     }
 
     public function latestPost()
     {
-        return $this->hasOne(Post::class, "owner_subtopic", "uuid")->latest();
+        return $this->hasOne(Post::class, "owner_subtopic", "id")->latest();
     }
 }

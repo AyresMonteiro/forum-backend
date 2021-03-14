@@ -13,6 +13,6 @@ class Topic extends Model
 
     public function subtopics()
     {
-        return $this->hasMany(Subtopic::class, "owner_topic", "uuid");
+        return $this->hasMany(Subtopic::class, "owner_topic", "id");
     }
 }

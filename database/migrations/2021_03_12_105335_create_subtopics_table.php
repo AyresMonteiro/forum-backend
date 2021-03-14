@@ -15,7 +15,7 @@ class CreateSubtopicsTable extends Migration
     public function up()
     {
         Schema::create('subtopics', function (Blueprint $table) {
-            $table->bigInteger('uuid')->default(new Expression('UUID_SHORT()'))->primary();
+            $table->bigInteger('id')->default(new Expression('UUID_SHORT()'))->primary();
             $table->bigInteger('owner_topic')->nullable();
             $table->string('title');
             $table->string('summary')->nullable();
@@ -24,7 +24,7 @@ class CreateSubtopicsTable extends Migration
 
             $table
                 ->foreign('owner_topic')
-                ->references('uuid')
+                ->references('id')
                 ->on('topics')
                 ->onDelete('set null')
                 ->onUpdate('cascade');

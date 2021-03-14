@@ -15,7 +15,7 @@ class CreateTopicsTable extends Migration
     public function up()
     {
         Schema::create('topics', function (Blueprint $table) {
-            $table->bigInteger('uuid')->default(new Expression('UUID_SHORT()'))->primary();
+            $table->bigInteger('id')->default(new Expression('UUID_SHORT()'))->primary();
             $table->string('title');
             $table->timestamp('created_at')->default(new Expression('NOW()'));
             $table->timestamp('updated_at')->default(new Expression('NOW()'));

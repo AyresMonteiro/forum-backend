@@ -15,7 +15,7 @@ class CreateCommentsTable extends Migration
     public function up()
     {
         Schema::create('comments', function (Blueprint $table) {
-            $table->bigInteger('uuid')->default(new Expression('UUID_SHORT()'))->primary();
+            $table->bigInteger('id')->default(new Expression('UUID_SHORT()'))->primary();
             $table->bigInteger('owner_post')->nullable();
             $table->bigInteger('owner_user')->nullable();
             $table->text('body');
@@ -24,14 +24,14 @@ class CreateCommentsTable extends Migration
 
             $table
                 ->foreign('owner_post')
-                ->references('uuid')
+                ->references('id')
                 ->on('posts')
                 ->onDelete('set null')
                 ->onUpdate('cascade');
 
             $table
                 ->foreign('owner_user')
-                ->references('uuid')
+                ->references('id')
                 ->on('users')
                 ->onDelete('set null')
                 ->onUpdate('cascade');

@@ -21,11 +21,11 @@ class User extends Model
 
     public function posts()
     {
-        return $this->hasMany(Post::class, "owner_user", "uuid");
+        return $this->hasMany(Post::class, "owner_user", "id");
     }
 
     public function comments()
     {
-        return $this->hasMany(Comment::class, "owner_user", "uuid");
+        return $this->hasMany(Comment::class, "owner_user", "id");
     }
 }

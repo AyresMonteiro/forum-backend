@@ -16,6 +16,6 @@ class Post extends Model
 
     public function comments()
     {
-        return $this->hasMany(Comment::class, "owner_user", "uuid");
+        return $this->hasMany(Comment::class, "owner_user", "id");
     }
 }
