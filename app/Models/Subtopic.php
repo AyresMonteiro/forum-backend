@@ -12,6 +12,7 @@ class Subtopic extends Model
     protected $fillable = [
         "title",
         "summary",
+        "owner_topic",
     ];
 
     public function posts()

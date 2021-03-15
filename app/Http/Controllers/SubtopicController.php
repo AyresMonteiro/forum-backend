@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Subtopic;
+use App\Models\Topic;
 use Illuminate\Http\Request;
 
 class SubtopicController extends Controller
@@ -35,6 +36,11 @@ class SubtopicController extends Controller
      */
     public function store(Request $request)
     {
+        $data = $request->validate([
+            "title" => "required",
+            "owner_topic" => "required",
+        ]);
+
         Subtopic::create($request->all());
     }
 
@@ -61,7 +67,6 @@ class SubtopicController extends Controller
      */
     public function edit(Subtopic $subtopic)
     {
-        //
     }
 
     /**
