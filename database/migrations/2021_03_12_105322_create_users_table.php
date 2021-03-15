@@ -18,10 +18,12 @@ class CreateUsersTable extends Migration
             $table->bigInteger('id')->default(new Expression('UUID_SHORT()'))->primary();
             $table->string('username')->unique();
             $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('fullName');
             $table->string('picture')->nullable();
             $table->string('country');
+            $table->rememberToken();
             $table->date('birthday')->nullable();
             $table->timestamp('created_at')->default(new Expression('NOW()'));
             $table->timestamp('updated_at')->default(new Expression('NOW()'));
