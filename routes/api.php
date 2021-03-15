@@ -31,5 +31,9 @@ Route::middleware("auth:api")->post("/posts", [PostController::class, "store"]);
 
 Route::middleware("auth:api")->post("/posts/comments", [CommentControler::class, "store"]);
 
-Route::post("/topics", [TopicController::class, "store"]);
-Route::post("/subtopics", [SubtopicController::class, "store"]);
+/*
+Não recomendo deixar essas rotas ativas, já que os tópicos/subtópicos não deveriam ser criados por usuários padrões
+e a aplicação não possui uma definição de usuário administrador, deixei elas aqui por fins de testes automatizados.
+ */
+// Route::post("/topics", [TopicController::class, "store"]);
+// Route::post("/subtopics", [SubtopicController::class, "store"]);
