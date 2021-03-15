@@ -9,6 +9,11 @@ class Subtopic extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        "title",
+        "summary",
+    ];
+
     public function posts()
     {
         return $this->hasMany(Post::class, "owner_subtopic", "id");
