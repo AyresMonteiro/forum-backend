@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Topic;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class TopicController extends Controller
 {
@@ -38,7 +37,7 @@ class TopicController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Topic::create($request->all());
     }
 
     /**
@@ -47,9 +46,11 @@ class TopicController extends Controller
      * @param  \App\Models\Topic  $topic
      * @return \Illuminate\Http\Response
      */
-    public function show(Topic $topic)
+    public function show($id)
     {
-        //
+        $topic = Topic::with("subtopics")->find($id);
+
+        return response($topic, 200);
     }
 
     /**

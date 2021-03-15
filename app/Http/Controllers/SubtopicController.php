@@ -35,7 +35,7 @@ class SubtopicController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Subtopic::create($request->all());
     }
 
     /**
@@ -44,9 +44,13 @@ class SubtopicController extends Controller
      * @param  \App\Models\Subtopic  $subtopic
      * @return \Illuminate\Http\Response
      */
-    public function show(Subtopic $subtopic)
+    public function show($id)
     {
-        //
+        $subtopic = Subtopic::find($id)->posts;
+        if ($subtopic == null) {
+            return View("subtopic.notFound", [], 404);
+        }
+        return response($subtopic, 200);
     }
 
     /**

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\SubtopicController;
+use App\Http\Controllers\TopicController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,5 +17,19 @@ use Illuminate\Support\Facades\Route;
  */
 
 Route::get("/users", [UserController::class, "index"]);
+Route::get("/users/{id}", [UserController::class, "show"]);
 Route::post("/users", [UserController::class, "store"]);
-Route::get("/users/{uuid}", [UserController::class, "show"]);
+
+Route::get("/topics", [TopicController::class, "index"]);
+Route::get("/topics/{id}", [TopicController::class, "show"]);
+
+Route::get("/subtopics", [SubtopicController::class, "index"]);
+Route::get("/subtopics/{id}", [SubtopicController::class, "show"]);
+
+Route::Get("/posts/{id}", [PostController::class, "show"]);
+Route::middleware("auth:api")->post("/posts", [PostController::class, "store"]);
+
+Route::middleware("auth:api")->post("/posts/comments", [CommentControler::class, "store"]);
+
+Route::post("/topics", [TopicController::class, "store"]);
+Route::post("/subtopics", [SubtopicController::class, "store"]);
