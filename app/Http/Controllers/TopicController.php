@@ -37,7 +37,14 @@ class TopicController extends Controller
      */
     public function store(Request $request)
     {
-        Topic::create($request->all());
+        $validatedData = $request->validate([
+            "title" => "required|max:255",
+        ]);
+
+        $topic = Topic::create($request->all());
+
+        return response($topic);
+        // return redirect("/");
     }
 
     /**

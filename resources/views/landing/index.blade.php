@@ -14,13 +14,23 @@
     <div class="main">
         <h1><strong>CEFET</strong> Forum</h1>
     </div>
+
+    <div>
+        <form action="api/topics" method="post">
+            <input type="text" name="title" placeholder="Insira o título do tópico">
+            <button type="submit">Criar</button>
+        </form>
+    </div>
+
+    <br><br>
+
     <div class="content-container">
-        <a href="" class="new-post">Criar Post</a>
         <div class="topics-container">
             @foreach ($topics as $topic)
                 @include('landing.topic', ['topic' => $topic])
             @endforeach
         </div>
+
     </div>
 </body>
 

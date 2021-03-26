@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Subtopic;
 use App\Models\Post;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 
-class SubtopicController extends Controller
+class CommentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +15,8 @@ class SubtopicController extends Controller
      */
     public function index()
     {
-        $subtopics = Subtopic::all();
-        return response($subtopics, 200);
+        $comments = Comment::all();
+        return response($comments, 200);
     }
 
     /**
@@ -35,55 +35,55 @@ class SubtopicController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
-        $data = $request->validate([
-            "title" => "required",
-            "owner_topic" => "required",
-        ]);
+        $comment = new Comment();
 
-        Subtopic::create($request->all());
+        $comment->body = $request->body;
+        $comment->owner_post = $id;
 
-        return redirect("/");
+        $comment->save();
+
+        $post = Post::find($id);
+        $comments = Comment::where("owner_post", $id)->oldest()->get();
+
+        return redirect("/posts/".$id);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Subtopic  $subtopic
+     * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $subtopic = Subtopic::find($id);
+        $post = Post::find($id);
 
-        if ($subtopic == null) {
-            return View("subtopic.notFound", [], 404);
-        }
+        $comments = Comment::where("owner_post", $id)->oldest()->get();
 
-        $posts = Post::where("owner_subtopic", $id)->latest()->get();
-
-        return View("landing.subtopicIndex", ["subtopic" => $subtopic, "posts" => $posts]);
+        return View("landing.post", ["post" => $post, "comments" => $comments]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Subtopic  $subtopic
+     * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function edit(Subtopic $subtopic)
+    public function edit(Post $post)
     {
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Subtopic  $subtopic
+     * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Subtopic $subtopic)
+    public function update(Request $request, Post $post)
     {
         //
     }
@@ -91,10 +91,10 @@ class SubtopicController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Subtopic  $subtopic
+     * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Subtopic $subtopic)
+    public function destroy(Post $post)
     {
         //
     }

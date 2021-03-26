@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -14,7 +15,8 @@ class PostController extends Controller
      */
     public function index()
     {
-
+        $posts = Post::all();
+        return response($posts, 200);
     }
 
     /**
@@ -35,8 +37,8 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $topic = Topic::create($request->all());
-        return response($topic, 201);
+        $post = Post::create($request->all());
+        return redirect("/subtopics/".$request->owner_subtopic);
     }
 
     /**
@@ -45,9 +47,13 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $post)
+    public function show($id)
     {
-        //
+        $post = Post::find($id);
+
+        $comments = Comment::where("owner_post", $id)->oldest()->get();
+
+        return View("landing.post", ["post" => $post, "comments" => $comments]);
     }
 
     /**

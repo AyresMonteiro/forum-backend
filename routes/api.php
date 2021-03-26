@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\SubtopicController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\TopicController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -27,13 +29,14 @@ Route::get("/subtopics", [SubtopicController::class, "index"]);
 Route::get("/subtopics/{id}", [SubtopicController::class, "show"]);
 
 Route::Get("/posts/{id}", [PostController::class, "show"]);
-Route::middleware("auth:api")->post("/posts", [PostController::class, "store"]);
+Route::Post("/posts", [PostController::class, "store"]);
 
-Route::middleware("auth:api")->post("/posts/comments", [CommentControler::class, "store"]);
+Route::Post("/posts/{id}/comments", [CommentController::class, "store"]);
 
 /*
 Não recomendo deixar essas rotas ativas, já que os tópicos/subtópicos não deveriam ser criados por usuários padrões
 e a aplicação não possui uma definição de usuário administrador, deixei elas aqui por fins de testes automatizados.
  */
-// Route::post("/topics", [TopicController::class, "store"]);
-// Route::post("/subtopics", [SubtopicController::class, "store"]);
+
+Route::Post("/topics", [TopicController::class, "store"]);
+Route::Post("/subtopics", [SubtopicController::class, "store"]);
