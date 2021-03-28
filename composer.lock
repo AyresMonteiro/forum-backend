@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0146583fdca1123faf36aebeeaebfe73",
+    "content-hash": "164c6ea5b1e4effe0cca3d635757cb1b",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2267,6 +2267,40 @@
                 "source": "https://github.com/paragonie/random_compat"
             },
             "time": "2020-10-15T08:29:30+00:00"
+        },
+        {
+            "name": "peterpetrus/passport-token",
+            "version": "0.0.10",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/peterpetrus/passport-token.git",
+                "reference": "6da356834fda20d29f0d47cbac012b61a820722a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/peterpetrus/passport-token/zipball/6da356834fda20d29f0d47cbac012b61a820722a",
+                "reference": "6da356834fda20d29f0d47cbac012b61a820722a",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.3.3 || ^7.0 || ^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Dirty Decoder for Laravel Passport (Bearer) Access Token",
+            "support": {
+                "issues": "https://github.com/peterpetrus/passport-token/issues",
+                "source": "https://github.com/peterpetrus/passport-token/tree/0.0.10"
+            },
+            "time": "2021-03-01T09:59:46+00:00"
         },
         {
             "name": "php-http/message-factory",

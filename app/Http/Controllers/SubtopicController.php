@@ -10,42 +10,22 @@ use Illuminate\Support\Facades\Validator;
 
 class SubtopicController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index(Request $request)
     {
-        $id = $request->id;
-
-        $validator = Validator::make([
-            'id' => $id
-        ], [
-            'id' => ['required', 'numeric']
-        ], [
-            'id.required' => 'Busca inválida!',
-            'id.numeric' => 'Busca inválida!',
-        ]);
-
-        if ($validator->fails()) {
-            $errors = [];
-            foreach ($validator->getMessageBag()->getMessages() as $field) {
-                foreach ($field as $message) {
-                    array_push($errors, $message);
-                }
-            }
-            return response()->json(['message' => 'error', 'errors' => $errors], 400);
-        }
-
         try {
-            $subtopics = Subtopic::with('posts');
+            $id = $request->id;
 
-            if (isset($id)) {
-                $subtopics->where('owner_topic', '=', $id);
-            }
+            if (! $id)
+               return response()->json(['message' => 'ok', "subtopics" => Subtopic::all()], 200);
 
-            $subtopics = $subtopics->get();
+            $subtopics = Subtopic::with("posts")->where("owner_topic", "=", $id)->get();
+
+            if(! sizeof($subtopics) >= 1)
+                return response()->json([
+                    "message" => "error", 
+                    "errors" => "Subtópicos não encontrados. Você tem certeza que um tópico com esse id existe?"
+                ], 404);
 
             return response()->json(['message' => 'ok', 'subtopics' => $subtopics], 200);
         } catch (Exception $e) {
@@ -53,12 +33,6 @@ class SubtopicController extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $subtopicValues = [
@@ -102,12 +76,6 @@ class SubtopicController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Topic  $topic
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $validator = Validator::make([

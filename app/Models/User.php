@@ -15,7 +15,7 @@ class User extends Model
         "username",
         "email",
         "password",
-        "fullName",
+        "full_name",
         "picture",
         "country",
         "birthday",

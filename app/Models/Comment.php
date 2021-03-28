@@ -11,5 +11,7 @@ class Comment extends Model
 
     protected $fillable = [
         "body",
+        "owner_post",
+        "owner_user"
     ];
 }

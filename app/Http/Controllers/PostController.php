@@ -4,32 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Validator;
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-
-    }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
-    {
+    {        
         $validator = Validator::make($request->all(), [
             "title" => "required",
             "body" => "required",
+            "owner_subtopic" => ['required', 'numeric', 'exists:subtopics,id'],
         ], [
             'title.required' => 'Envie um título!',
             'body.required' => 'Envie um body!',
+            'owner_subtopic.required' => 'Envie o subtópico do qual pertence!',
+            'owner_subtopic.numeric' => 'Subtópico inválido!',
+            'owner_subtopic.exists' => 'Subtópico inválido!',
         ]);
 
         if ($validator->fails()) {
@@ -43,19 +32,20 @@ class PostController extends Controller
         }
 
         try{
-            $topic = Topic::create($request->all());
-            return response($topic, 201);
+            Post::create([
+                "title" => $request->title,
+                "body" => $request->body,
+                "owner_subtopic" => $request->owner_subtopic,
+                "owner_user" => $request->decodedId
+            ]);
+            
+            $post = Post::where(["owner_subtopic" => "99185406863474706", "owner_user" => "99185406863474704"])->first();
+
+            return response()->json(['message' => 'ok', 'post' => $post], 201);
         } catch (Exception $e) {
             return response()->json(['message' => 'error', 'errors' => ['Erro do servidor']], 500);
         }
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $validator = Validator::make([
@@ -78,7 +68,7 @@ class PostController extends Controller
         }
 
         try {
-            $post = Post::find($id);
+            $post = Post::with("comments")->find("$id");
 
             if (!$post) {
                 return response(['message' => 'error', 'errors' => "Post não encontrado"], 404);
@@ -88,39 +78,5 @@ class PostController extends Controller
         } catch (Exception $e) {
             return response()->json(['message' => 'error', 'errors' => ['Erro do servidor']], 500);
         }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Post $post)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Post $post)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Post $post)
-    {
-        //
     }
 }

@@ -26,18 +26,12 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             "username" => ["required", "unique:users", "max:20"],
             "email" => ["required", "unique:users"],
-            "fullName" => ["required", "max:50"],
+            "full_name" => "max:80",
             "country" => "required",
             "password" => "required",
         ], [
@@ -47,7 +41,7 @@ class UserController extends Controller
             'email.required' => 'Envie um email!',
             'email.unique' => 'Esse endereço de email já pertence à outra pessoa!',
             'country.required' => 'Envie um país de origem!',
-            'fullName.required' => 'Envie um nome!',
+            'full_name.max' => 'O nome tem um tamanho grande demais!',
             'password.required' => 'Envie uma senha!'
         ]);
 
@@ -65,7 +59,7 @@ class UserController extends Controller
             $user = User::create([
                 "username" => $request->username,
                 "email" => $request->email,
-                "fullName" => $request->fullName,
+                "full_name" => $request->full_name,
                 "country" => $request->country,
                 "password" => Hash::make($request->password)
             ]);
@@ -77,12 +71,6 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $validator = Validator::make([
@@ -115,39 +103,5 @@ class UserController extends Controller
         } catch (Exception $e) {
             return response()->json(['message' => 'error', 'errors' => ['Erro do servidor']], 500);
         }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

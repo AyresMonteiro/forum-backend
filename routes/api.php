@@ -6,6 +6,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\TopicController;
 use App\Http\Controllers\UserController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,28 +20,31 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
-Route::post("/login", [AuthController::class, "login"]);
-
 Route::group(['prefix' => 'users'], function () {
   Route::get("/", [UserController::class, "index"]);
   Route::post("/store", [UserController::class, "store"]);
+  Route::post("/login", [AuthController::class, "login"]);
   Route::get("/{id}", [UserController::class, "show"]);
 });
 
 Route::group(['prefix' => 'topics'], function() {
   Route::get("/", [TopicController::class, "index"]);
-  Route::post("/create", [TopicController::class, "store"]);
+  Route::post("/store", [TopicController::class, "store"])->middleware("auth", "admin");
   Route::get("/{id}", [TopicController::class, "show"]);
 });
 
 Route::group(['prefix' => 'subtopics'], function() {
   Route::get("/{id?}", [SubtopicController::class, "index"]);
-  Route::post("/create", [SubtopicController::class, "store"]);
+  Route::post("/store", [SubtopicController::class, "store"])->middleware("auth", "admin");
   Route::get("/show/{id}", [SubtopicController::class, "show"]);
 });
 
 Route::group(['prefix' => 'posts'], function() {
-  Route::post("/", [PostController::class, "store"]);
   Route::get("/{id}", [PostController::class, "show"]);
-  Route::post("/{id}/comments", [CommentController::class, "store"]);
+  Route::post("/store", [PostController::class, "store"])->middleware("auth");
 });
+
+Route::group(['prefix' => 'comments'], function() {
+  Route::post("/store", [CommentController::class, "store"])->middleware("auth");
+});
+

@@ -12,10 +12,12 @@ class Post extends Model
     protected $fillable = [
         "title",
         "body",
+        "owner_subtopic",
+        "owner_user"
     ];
 
     public function comments()
     {
-        return $this->hasMany(Comment::class, "owner_user", "id");
+        return $this->hasMany(Comment::class, "owner_post", "id");
     }
 }
