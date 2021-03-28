@@ -16,17 +16,6 @@ class PostController extends Controller
     {
 
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -35,8 +24,30 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $topic = Topic::create($request->all());
-        return response($topic, 201);
+        $validator = Validator::make($request->all(), [
+            "title" => "required",
+            "body" => "required",
+        ], [
+            'title.required' => 'Envie um título!',
+            'body.required' => 'Envie um body!',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = [];
+            foreach ($validator->getMessageBag()->getMessages() as $field) {
+                foreach ($field as $message) {
+                        array_push($errors, $message);
+                }
+            }
+            return response()->json(['message' => 'error', 'errors' => $errors], 400);
+        }
+
+        try{
+            $topic = Topic::create($request->all());
+            return response($topic, 201);
+        } catch (Exception $e) {
+            return response()->json(['message' => 'error', 'errors' => ['Erro do servidor']], 500);
+        }
     }
 
     /**
@@ -45,9 +56,38 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $post)
+    public function show($id)
     {
-        //
+        $validator = Validator::make([
+            'id' => $id
+        ], [
+            'id' => ['required', 'numeric']
+        ], [
+            'id.required' => 'Busca inválida!',
+            'id.numeric' => 'Busca inválida!',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = [];
+            foreach ($validator->getMessageBag()->getMessages() as $field) {
+                foreach ($field as $message) {
+                    array_push($errors, $message);
+                }
+            }
+            return response()->json(['message' => 'error', 'errors' => $errors], 400);
+        }
+
+        try {
+            $post = Post::find($id);
+
+            if (!$post) {
+                return response(['message' => 'error', 'errors' => "Post não encontrado"], 404);
+            }
+
+            return response(['message' => 'ok', 'post' => $post], 200);
+        } catch (Exception $e) {
+            return response()->json(['message' => 'error', 'errors' => ['Erro do servidor']], 500);
+        }
     }
 
     /**

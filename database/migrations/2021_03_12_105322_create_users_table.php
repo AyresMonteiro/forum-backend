@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('fullName');
             $table->string('picture')->nullable();
             $table->string('country');
+            $table->enum('account_type', ['user', 'admin'])->default('user');;
             $table->rememberToken();
             $table->date('birthday')->nullable();
             $table->timestamp('created_at')->default(new Expression('NOW()'));

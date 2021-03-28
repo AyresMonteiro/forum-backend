@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\SubtopicController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\TopicController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -16,24 +19,28 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
-Route::get("/users", [UserController::class, "index"]);
-Route::get("/users/{id}", [UserController::class, "show"]);
-Route::post("/users", [UserController::class, "store"]);
+Route::post("/login", [AuthController::class, "login"]);
 
-Route::get("/topics", [TopicController::class, "index"]);
-Route::get("/topics/{id}", [TopicController::class, "show"]);
+Route::group(['prefix' => 'users'], function () {
+  Route::get("/", [UserController::class, "index"]);
+  Route::post("/store", [UserController::class, "store"]);
+  Route::get("/{id}", [UserController::class, "show"]);
+});
 
-Route::get("/subtopics", [SubtopicController::class, "index"]);
-Route::get("/subtopics/{id}", [SubtopicController::class, "show"]);
+Route::group(['prefix' => 'topics'], function() {
+  Route::get("/", [TopicController::class, "index"]);
+  Route::post("/create", [TopicController::class, "store"]);
+  Route::get("/{id}", [TopicController::class, "show"]);
+});
 
-Route::Get("/posts/{id}", [PostController::class, "show"]);
-Route::middleware("auth:api")->post("/posts", [PostController::class, "store"]);
+Route::group(['prefix' => 'subtopics'], function() {
+  Route::get("/{id?}", [SubtopicController::class, "index"]);
+  Route::post("/create", [SubtopicController::class, "store"]);
+  Route::get("/show/{id}", [SubtopicController::class, "show"]);
+});
 
-Route::middleware("auth:api")->post("/posts/comments", [CommentControler::class, "store"]);
-
-/*
-Não recomendo deixar essas rotas ativas, já que os tópicos/subtópicos não deveriam ser criados por usuários padrões
-e a aplicação não possui uma definição de usuário administrador, deixei elas aqui por fins de testes automatizados.
- */
-// Route::post("/topics", [TopicController::class, "store"]);
-// Route::post("/subtopics", [SubtopicController::class, "store"]);
+Route::group(['prefix' => 'posts'], function() {
+  Route::post("/", [PostController::class, "store"]);
+  Route::get("/{id}", [PostController::class, "show"]);
+  Route::post("/{id}/comments", [CommentController::class, "store"]);
+});

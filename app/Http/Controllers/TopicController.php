@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Topic;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class TopicController extends Controller
 {
@@ -14,19 +16,13 @@ class TopicController extends Controller
      */
     public function index()
     {
-        $topics = Topic::with('subtopics.latestPost')->get();
+        try {
+            $topics = Topic::with('subtopics.latestPost')->get();
 
-        return view('landing.index', ['topics' => $topics]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+            return response()->json(['message' => 'ok', 'topics' => $topics], 200);
+        } catch (Exception $e) {
+            return response()->json(['message' => 'error', 'errors' => ['Erro do servidor']], 500);
+        }
     }
 
     /**
@@ -37,7 +33,36 @@ class TopicController extends Controller
      */
     public function store(Request $request)
     {
-        Topic::create($request->all());
+        $topicValues = [
+            'title' => $request->title
+        ];
+
+        $validator = Validator::make($topicValues, [
+            'title' => ['required', 'string', 'unique:topics']
+        ], [
+            'title.required' => 'Envie um título!',
+            'title.string' => 'Título inválido!',
+            'title.unique' => 'Esse tópico já existe!',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = [];
+            foreach ($validator->getMessageBag()->getMessages() as $field) {
+                foreach ($field as $message) {
+                    array_push($errors, $message);
+                }
+            }
+            return response()->json(['message' => 'error', 'errors' => $errors], 400);
+        }
+
+        try {
+            $topic = Topic::firstOrCreate($topicValues);
+            $topic = Topic::where('title', '=', $topicValues['title'])->first();
+
+            return response()->json(['message' => 'ok', 'topic' => $topic], 201);
+        } catch (Exception $e) {
+            return response()->json(['message' => 'error', 'errors' => ['Erro do servidor']], 500);
+        }
     }
 
     /**
@@ -48,42 +73,36 @@ class TopicController extends Controller
      */
     public function show($id)
     {
-        $topic = Topic::with("subtopics")->find($id);
+        $validator = Validator::make([
+            'id' => $id
+        ], [
+            'id' => ['required', 'numeric']
+        ], [
+            'id.required' => 'Busca inválida!',
+            'id.numeric' => 'Busca inválida!',
+        ]);
 
-        return response($topic, 200);
-    }
+        if ($validator->fails()) {
+            $errors = [];
+            foreach ($validator->getMessageBag()->getMessages() as $field) {
+                foreach ($field as $message) {
+                    array_push($errors, $message);
+                }
+            }
+            return response()->json(['message' => 'error', 'errors' => $errors], 400);
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Topic  $topic
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Topic $topic)
-    {
-        //
-    }
+        try {
+            $status = 200;
+            $topic = Topic::with('subtopics.latestPost')->find($id);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Topic  $topic
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Topic $topic)
-    {
-        //
-    }
+            if (!isset($topic)) {
+                $status = 404;
+            }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Topic  $topic
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Topic $topic)
-    {
-        //
+            return response()->json(['message' => 'ok', 'topic' => $topic], $status);
+        } catch (Exception $e) {
+            return response()->json(['message' => 'error', 'errors' => ['Erro do servidor']], 500);
+        }
     }
 }
